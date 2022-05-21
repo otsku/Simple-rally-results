@@ -33,14 +33,14 @@ data class WrcJsonObject(var rallyEvents: RallyEvents? = null)
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listview: ListView
-    private lateinit var adapter: ArrayAdapter<Items>
+    private lateinit var adapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         listview = findViewById<ListView>(R.id.listView)
-        adapter = ArrayAdapter<Items>(this, R.layout.item, R.id.myTextView, ArrayList<Items>())
+        adapter = ArrayAdapter<String>(this, R.layout.item, R.id.myTextView, ArrayList<String>())
         listview.adapter = adapter
 
         listview.setOnItemClickListener { parent, _, position, _ ->
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             val items: MutableList<Items>? = events?.items
             items?.forEach {
                 runOnUiThread() {
-                    adapter.add(it)
+                    adapter.add(it.name)
                     println(it)
                 }
             }
