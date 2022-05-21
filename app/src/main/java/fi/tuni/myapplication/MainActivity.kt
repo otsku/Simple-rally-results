@@ -1,9 +1,6 @@
 package fi.tuni.myapplication
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +20,7 @@ data class Nation(var id: Int? = 0, var name: String? = null, var alpha2: String
 data class Winner(var id: Int? = 0, var firstName: String? = null, var lastName: String? = null)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Items(var id: Int? = 0, var name: String? = null, var Nation: Nation? = null, var winner: Winner? = null)
+data class Items(var id: Int? = 0, var name: String? = null, var nation: Nation? = null, var winner: Winner? = null)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RallyEvents(var total : Int? = 0, var items: MutableList<Items>? = null)
@@ -67,8 +64,6 @@ class MainActivity : AppCompatActivity() {
                     println(it)
                 }
             }
-
-
         }
     }
 
