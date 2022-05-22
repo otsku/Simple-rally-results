@@ -22,7 +22,10 @@ data class Nation(var id: Int? = 0, var name: String? = null, var alpha2: String
 data class Winner(var id: Int? = 0, var firstName: String? = null, var lastName: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Items(var id: Int? = 0, var name: String? = null, var nation: Nation? = null, var winner: Winner? = null) : Serializable
+data class Status(var id: Int? = 0, var name: String? = null) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Items(var id: Int? = 0, var name: String? = null, var nation: Nation? = null, var winner: Winner? = null, var status: Status? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RallyEvents(var total : Int? = 0, var items: MutableList<Items>? = null) : Serializable
