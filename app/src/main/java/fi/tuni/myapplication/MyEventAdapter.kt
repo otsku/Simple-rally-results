@@ -14,6 +14,7 @@ class MyEventAdapter(context: Context, resource: Int, private val arrayList:Arra
     private lateinit var eventcount: TextView
     private lateinit var name: TextView
     private lateinit var winner: TextView
+    private lateinit var time: TextView
 
     fun add(item: Stage, winner: Entrant?) {
         arrayList.add(item)
@@ -39,9 +40,32 @@ class MyEventAdapter(context: Context, resource: Int, private val arrayList:Arra
         eventcount = convertview.findViewById(R.id.countTextView)
         name = convertview.findViewById(R.id.nameTextView)
         winner = convertview.findViewById(R.id.winnerTextView)
+        time = convertview.findViewById(R.id.timeTextView)
         eventcount.text = (position + 1).toString()
         name.text = arrayList[position].stageName
-        winner.text = winners[position]?.driver?.lastName.toString()
+        winner.text = "Stage winner: " + winners[position]?.driver?.lastName.toString()
+        val timeString = getTime(arrayList[position].elapsedDurationMs!!)
+        time.text = "Best time: " + timeString
         return convertview
+    }
+
+    fun getTime(milliseconds: Int) : String {
+        val hours = milliseconds / 1000 / 60 / 60 % 24
+        var minutes = (milliseconds / 1000 / 60 % 60).toString()
+        if(minutes.length == 1) {
+            minutes = "0$minutes"
+        }
+        var seconds = (milliseconds / 1000 % 60).toString()
+        if(seconds.length == 1) {
+            seconds = "0$seconds"
+        }
+        val tenths = milliseconds / 100 % 10
+        if(hours == 0 && minutes == "00") {
+            return "$seconds.$tenths"
+        }
+        if(hours == 0) {
+            return "$minutes:$seconds.$tenths"
+        }
+        return "$hours:$minutes:$seconds.$tenths"
     }
 }

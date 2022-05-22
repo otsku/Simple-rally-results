@@ -33,7 +33,7 @@ data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manuf
 data class Entrants(var entrants: MutableList<Entrant>? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Stage(var stageId: Int? = 0, var entryId: Int? = 0, var stageName: String? = null) : Serializable
+data class Stage(var stageId: Int? = 0, var entryId: Int? = 0, var stageName: String? = null, var elapsedDurationMs: Int? = 0) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Stages(var stages: MutableList<Stage>? = null) : Serializable
