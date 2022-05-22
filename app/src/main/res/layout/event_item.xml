@@ -14,16 +14,16 @@
         android:text="Count" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="8">
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="3"
             android:text="Name"
             android:textSize="24sp" />
 
@@ -32,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="3"
             android:text="Winner"
             android:textSize="20sp" />
 
@@ -41,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="3"
             android:text="Time"
             android:textSize="20sp" />
 
