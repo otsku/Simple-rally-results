@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
             val events: RallyEvents? = myObject.rallyEvents
             val items: MutableList<Items>? = events?.items
-            if(adapter.getList() == ArrayList<Items>()) {
+            if(adapter.getList().size == 0) {
                 items?.forEach {
                     runOnUiThread() {
                         adapter.add(it)
