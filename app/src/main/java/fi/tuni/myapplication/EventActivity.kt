@@ -1,5 +1,6 @@
 package fi.tuni.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
@@ -23,7 +24,10 @@ data class Driver(var personId: Int? = 0, var country: Country? = null, var firs
 data class Manufacturer(var manufacturerId : Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manufacturer: Manufacturer? = null, var status: String? = null) : Serializable
+data class Group(var groupId : Int? = 0, var name: String? = null) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manufacturer: Manufacturer? = null, var status: String? = null, var group: Group? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Entrants(var entrants: MutableList<Entrant>? = null) : Serializable
@@ -38,50 +42,52 @@ class EventActivity() : AppCompatActivity() {
     private lateinit var item: Items
     private lateinit var listview: ListView
     private lateinit var adapter: MyEventAdapter
+    private lateinit var entrants: Entrants
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
-
         item = intent.getSerializableExtra("item") as Items
-
         listview = findViewById<ListView>(R.id.listView)
-
         adapter = MyEventAdapter(this, R.layout.item, ArrayList<Stage>(), ArrayList<Entrant?>())
-
         listview.adapter = adapter
-
-        Log.d("Message", item.name.toString())
+        listview.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem: Serializable = parent.getItemAtPosition(position) as Serializable
+            val intent = Intent(
+                this@EventActivity,
+                StageActivity::class.java
+            )
+            intent.putExtra("stage", selectedItem)
+            intent.putExtra("event_id", item.id)
+            intent.putExtra("entrants", entrants)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {
         super.onStart()
         thread() {
             val mp = ObjectMapper()
-
             var cars = getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/cars")
             cars = cars?.dropLast(4)
             cars = "{\"entrants\":" + cars.toString() + "}"
-
-            val entrants: Entrants = mp.readValue(cars, Entrants::class.java)
-            Log.d("Message", entrants.toString())
-
+            entrants = mp.readValue(cars, Entrants::class.java)
             var stagesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/stage-winners")
             stagesraw = stagesraw?.dropLast(4)
             stagesraw = "{\"stages\":" + stagesraw.toString() + "}"
-
             val stages: Stages = mp.readValue(stagesraw, Stages::class.java)
-            Log.d("Message", stages.toString())
-            stages.stages?.forEach {
-                runOnUiThread() {
-                    var winner: Entrant? = null
-                    for(i in entrants.entrants!!) {
-                        if(it.entryId == i.entryId) {
-                            winner = i
+            if(adapter.getList().size == 0) {
+                stages.stages?.forEach {
+                    runOnUiThread() {
+                        var winner: Entrant? = null
+                        for(i in entrants.entrants!!) {
+                            if(it.entryId == i.entryId) {
+                                winner = i
+                            }
                         }
+                        adapter.add(it, winner)
+                        adapter.notifyDataSetChanged()
                     }
-                    adapter.add(it, winner)
-                    adapter.notifyDataSetChanged()
                 }
             }
         }

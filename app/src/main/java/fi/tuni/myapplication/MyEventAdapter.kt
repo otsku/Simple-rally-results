@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.content.Context;
+import android.util.Log
 import java.util.ArrayList;
 
 class MyEventAdapter(context: Context, resource: Int, private val arrayList:ArrayList<Stage> , private val winners:ArrayList<Entrant?>) : ArrayAdapter<Stage>(context, resource, arrayList) {
@@ -34,7 +35,7 @@ class MyEventAdapter(context: Context, resource: Int, private val arrayList:Arra
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertview = convertView
-        convertview = LayoutInflater.from(context).inflate(R.layout.item, parent, false)
+        convertview = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false)
         eventcount = convertview.findViewById(R.id.countTextView)
         name = convertview.findViewById(R.id.nameTextView)
         winner = convertview.findViewById(R.id.winnerTextView)

@@ -37,13 +37,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         listview = findViewById<ListView>(R.id.listView)
-
         adapter = MyAdapter(this, R.layout.item, ArrayList<Items>())
-
         listview.adapter = adapter
-
         listview.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem: Serializable = parent.getItemAtPosition(position) as Serializable
             val intent = Intent(
@@ -60,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         thread() {
             val stuff = getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
-
             val mp = ObjectMapper()
             val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
             val events: RallyEvents? = myObject.rallyEvents
