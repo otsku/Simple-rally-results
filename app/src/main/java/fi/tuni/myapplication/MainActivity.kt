@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                 items?.forEach {
                     runOnUiThread() {
                         adapter.add(it)
-                        println(it)
                         adapter.notifyDataSetChanged()
                     }
                 }
