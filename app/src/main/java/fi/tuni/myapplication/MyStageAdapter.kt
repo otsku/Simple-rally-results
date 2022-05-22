@@ -11,17 +11,19 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
-class MyStageAdapter(context: Context, resource: Int, private val arrayList: ArrayList<Result>, private val drivers: ArrayList<Entrant?>) : ArrayAdapter<Result>(context, resource, arrayList) {
+class MyStageAdapter(context: Context, resource: Int, private val arrayList: ArrayList<Result>, private val drivers: ArrayList<Entrant?>, private val times: ArrayList<StageTime?>) : ArrayAdapter<Result>(context, resource, arrayList) {
     private lateinit var eventcount: TextView
     private lateinit var name: TextView
     private lateinit var diffTime: TextView
     private lateinit var totalTime: TextView
+    private lateinit var stageTime: TextView
     private lateinit var classView: TextView
     private lateinit var manifacturer: TextView
 
-    fun add(item: Result, driver: Entrant?) {
+    fun add(item: Result, driver: Entrant?, time: StageTime?) {
         arrayList.add(item)
         drivers.add(driver)
+        times.add(time)
     }
 
     fun getList(): ArrayList<Result> {
@@ -44,12 +46,15 @@ class MyStageAdapter(context: Context, resource: Int, private val arrayList: Arr
         name = convertview.findViewById(R.id.nameTextView)
         diffTime = convertview.findViewById(R.id.diffTextView)
         totalTime = convertview.findViewById(R.id.totalTextView)
+        stageTime = convertview.findViewById(R.id.stageTextView)
         classView = convertview.findViewById(R.id.classTextView)
         manifacturer = convertview.findViewById(R.id.manifacturerTextView)
         eventcount.text = arrayList[position].position.toString()
         name.text = drivers[position]?.driver?.fullName.toString()
         val tTime = getTime(arrayList[position].totalTimeMs!!)
         totalTime.text = "Total time: $tTime s"
+        val sTime = getTime(times[position]?.elapsedDurationMs!!)
+        stageTime.text = "Stage time: $sTime s"
         val dTime = getTime(arrayList[position].diffFirstMs!!)
         diffTime.text = "Diff to first: +$dTime s"
         classView.text = "Group: " + drivers[position]?.group?.name

@@ -14,6 +14,12 @@ import java.net.URL
 import kotlin.concurrent.thread
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+data class StageTime(var entryId: Int? = 0, var elapsedDurationMs: Int? = 0, var status: String? = null, var position: Int? = 0, var diffFirstMs: Int? = 0) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class StageTimes(var times: MutableList<StageTime>? = null) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Result(var entryId: Int? = 0, var stageTimeMs: Int? = 0, var totalTimeMs: Int? = 0, var position: Int? = 0, var diffFirstMs: Int? = 0) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,7 +39,7 @@ class StageActivity() : AppCompatActivity() {
         entrants = intent.getSerializableExtra("entrants") as Entrants
         eventId = intent.getSerializableExtra("event_id") as Int
         listview = findViewById<ListView>(R.id.listView)
-        adapter = MyStageAdapter(this, R.layout.item, ArrayList<Result>(), ArrayList<Entrant?>())
+        adapter = MyStageAdapter(this, R.layout.item, ArrayList<Result>(), ArrayList<Entrant?>(), ArrayList<StageTime?>())
         listview.adapter = adapter
     }
 
@@ -45,6 +51,13 @@ class StageActivity() : AppCompatActivity() {
             resultsraw = resultsraw?.dropLast(4)
             resultsraw = "{\"results\":" + resultsraw.toString() + "}"
             val results: Results = mp.readValue(resultsraw, Results::class.java)
+
+            var timesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-times/stage-external/" + stage.stageId)
+            timesraw = timesraw?.dropLast(4)
+            timesraw = "{\"times\":" + timesraw.toString() + "}"
+            Log.d("Message", timesraw.toString())
+            val times: StageTimes = mp.readValue(timesraw, StageTimes::class.java)
+
             if(adapter.getList().size == 0) {
                 results.results?.forEach {
                     runOnUiThread() {
@@ -54,7 +67,13 @@ class StageActivity() : AppCompatActivity() {
                                 entrant = i
                             }
                         }
-                        adapter.add(it, entrant)
+                        var time: StageTime? = null
+                        for(i in times.times!!) {
+                            if(it.entryId == i.entryId) {
+                                time = i
+                            }
+                        }
+                        adapter.add(it, entrant, time)
                         adapter.notifyDataSetChanged()
                     }
                 }
