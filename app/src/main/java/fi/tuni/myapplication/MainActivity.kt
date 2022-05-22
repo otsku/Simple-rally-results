@@ -1,6 +1,7 @@
 package fi.tuni.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,14 +31,16 @@ data class WrcJsonObject(var rallyEvents: RallyEvents? = null)
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listview: ListView
-    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var adapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         listview = findViewById<ListView>(R.id.listView)
-        adapter = ArrayAdapter<String>(this, R.layout.item, R.id.myTextView, ArrayList<String>())
+
+        adapter = MyAdapter(this, R.layout.item, ArrayList<Items>())
+
         listview.adapter = adapter
 
         listview.setOnItemClickListener { parent, _, position, _ ->
@@ -45,12 +48,12 @@ class MainActivity : AppCompatActivity() {
             println(selectedItem)
         }
 
-        getData()
+
     }
 
 
-
-    fun getData() {
+    override fun onStart() {
+        super.onStart()
         thread() {
             val stuff = getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
 
@@ -58,10 +61,13 @@ class MainActivity : AppCompatActivity() {
             val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
             val events: RallyEvents? = myObject.rallyEvents
             val items: MutableList<Items>? = events?.items
-            items?.forEach {
-                runOnUiThread() {
-                    adapter.add(it.name)
-                    println(it)
+            if(adapter.getList() == ArrayList<Items>()) {
+                items?.forEach {
+                    runOnUiThread() {
+                        adapter.add(it)
+                        println(it)
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
         }

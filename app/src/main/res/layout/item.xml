@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="10dp"
-    android:id="@+id/myTextView"
-    android:textSize="16dp" >
-</TextView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100" >
+
+    <TextView
+        android:id="@+id/countTextView"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_height="match_parent"
+        android:textSize="25dp"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="45"
+        android:layout_height="match_parent"
+        android:textSize="25dp"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/winnerTextView"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_weight="45"
+        android:layout_height="match_parent"
+        android:textSize="25dp"
+        android:text="Age" />
+
+</LinearLayout>
