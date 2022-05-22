@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List of rallies this season"
+        android:textSize="32sp" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
