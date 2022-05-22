@@ -28,6 +28,11 @@
             android:exported="true"
             tools:ignore="Instantiatable">
         </activity>
+        <activity
+            android:name=".StageActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
     </application>
 
 </manifest>
