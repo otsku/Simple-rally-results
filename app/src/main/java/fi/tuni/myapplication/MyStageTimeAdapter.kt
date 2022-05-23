@@ -52,7 +52,7 @@ class MyStageTimeAdapter(context: Context, resource: Int, private val arrayList:
         val dTime = functions.getTime(arrayList[position].diffFirstMs!!)
         diffTime.text = "Diff to first: +$dTime s"
         classView.text = "Group: " + drivers[position]?.group?.name
-        manifacturer.text = "Manifacturer: "+ drivers[position]?.manufacturer?.name
+        manifacturer.text = "Car: "+ drivers[position]?.vehicleModel
         return convertview
     }
 }
