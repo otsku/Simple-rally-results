@@ -30,7 +30,7 @@ class MyAdapter(context: Context, resource: Int, private val arrayList: ArrayLis
         return position.toLong()
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertview = convertView
         convertview = LayoutInflater.from(context).inflate(R.layout.item, parent, false)
