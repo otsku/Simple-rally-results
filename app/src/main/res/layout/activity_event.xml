@@ -7,18 +7,40 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/eventTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Event results" />
+        android:text="Event name"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/daysTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Days"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/winnerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Winner"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/nationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Manifacturer"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Stages in chosen event"
-        android:textSize="32sp" />
+        android:textSize="28sp" />
 
     <ListView
         android:id="@+id/listView"
