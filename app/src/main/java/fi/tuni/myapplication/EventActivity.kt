@@ -181,36 +181,37 @@ class EventActivity() : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         thread() {
-            val mp = ObjectMapper()
-            var cars = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/cars")
-            cars = cars?.dropLast(4)
-            cars = "{\"entrants\":" + cars.toString() + "}"
-            entrants = mp.readValue(cars, Entrants::class.java)
-            var stagesraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/stage-winners")
-            stagesraw = stagesraw?.dropLast(4)
-            stagesraw = "{\"stages\":" + stagesraw.toString() + "}"
-            val stages: Stages = mp.readValue(stagesraw, Stages::class.java)
-            if(stages.stages?.size == 0) {
-                title.text = "Event has not started yet."
-            }
-            else {
-                if(adapter.getList().size == 0) {
-                    runOnUiThread() {
-                        button2.visibility = View.VISIBLE
-                        button3.visibility = View.VISIBLE
-                    }
-                    stages.stages?.forEach {
+            if(adapter.getList().size == 0) {
+                val mp = ObjectMapper()
+                var cars = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/cars")
+                cars = cars?.dropLast(4)
+                cars = "{\"entrants\":" + cars.toString() + "}"
+                entrants = mp.readValue(cars, Entrants::class.java)
+                var stagesraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/stage-winners")
+                stagesraw = stagesraw?.dropLast(4)
+                stagesraw = "{\"stages\":" + stagesraw.toString() + "}"
+                val stages: Stages = mp.readValue(stagesraw, Stages::class.java)
+                if(stages.stages?.size == 0) {
+                    title.text = "Event has not started yet"
+                }
+                else {
                         runOnUiThread() {
-                            var winner: Entrant? = null
-                            for(i in entrants.entrants!!) {
-                                if(it.entryId == i.entryId) {
-                                    winner = i
-                                }
-                            }
-                            adapter.add(it, winner)
-                            adapter.notifyDataSetChanged()
+                            title.text = "Stages in chosen event"
+                            button2.visibility = View.VISIBLE
+                            button3.visibility = View.VISIBLE
                         }
-                    }
+                        stages.stages?.forEach {
+                            runOnUiThread() {
+                                var winner: Entrant? = null
+                                for(i in entrants.entrants!!) {
+                                    if(it.entryId == i.entryId) {
+                                        winner = i
+                                    }
+                                }
+                                adapter.add(it, winner)
+                                adapter.notifyDataSetChanged()
+                            }
+                        }
                 }
             }
         }

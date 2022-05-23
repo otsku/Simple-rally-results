@@ -117,12 +117,12 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         thread() {
-            val stuff = functions.getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
-            val mp = ObjectMapper()
-            val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
-            val events: RallyEvents? = myObject.rallyEvents
-            val items: MutableList<Items>? = events?.items
             if(adapter.getList().size == 0) {
+                val stuff = functions.getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
+                val mp = ObjectMapper()
+                val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
+                val events: RallyEvents? = myObject.rallyEvents
+                val items: MutableList<Items>? = events?.items
                 items?.forEach {
                     runOnUiThread() {
                         adapter.add(it)

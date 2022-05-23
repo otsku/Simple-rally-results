@@ -38,13 +38,12 @@ class ResultsActivity() : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         thread() {
-            val mp = ObjectMapper()
-            var resultsraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-result/stage-external/" + stage.stageId)
-            resultsraw = resultsraw?.dropLast(4)
-            resultsraw = "{\"results\":" + resultsraw.toString() + "}"
-            val results: Results = mp.readValue(resultsraw, Results::class.java)
-
             if(adapter.getList().size == 0) {
+                val mp = ObjectMapper()
+                var resultsraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-result/stage-external/" + stage.stageId)
+                resultsraw = resultsraw?.dropLast(4)
+                resultsraw = "{\"results\":" + resultsraw.toString() + "}"
+                val results: Results = mp.readValue(resultsraw, Results::class.java)
                 results.results?.forEach {
                     runOnUiThread() {
                         var entrant: Entrant? = null
