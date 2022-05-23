@@ -19,13 +19,16 @@ import kotlin.concurrent.thread
 data class Nation(var id: Int? = 0, var name: String? = null, var alpha2: String? = null, var alpha3: String? = null, var ioc: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Winner(var id: Int? = 0, var firstName: String? = null, var lastName: String? = null) : Serializable
+data class Winner(var id: Int? = 0, var firstName: String? = null, var lastName: String? = null, var nation: Nation? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Status(var id: Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Items(var id: Int? = 0, var name: String? = null, var nation: Nation? = null, var winner: Winner? = null, var status: Status? = null) : Serializable
+data class EventDay(var id: Int? = 0, var eventDay: String? = null) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Items(var id: Int? = 0, var name: String? = null, var nation: Nation? = null, var winner: Winner? = null, var status: Status? = null, var eventDays: MutableList<EventDay>? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RallyEvents(var total : Int? = 0, var items: MutableList<Items>? = null) : Serializable
