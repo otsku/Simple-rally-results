@@ -43,6 +43,13 @@
         android:text="Event Results"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Event entrants"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"

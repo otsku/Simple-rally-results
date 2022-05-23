@@ -26,7 +26,10 @@ data class Manufacturer(var manufacturerId : Int? = 0, var name: String? = null)
 data class Group(var groupId : Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manufacturer: Manufacturer? = null, var status: String? = null, var group: Group? = null) : Serializable
+data class Entry(var entrantId : Int? = 0, var name: String? = null) : Serializable
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manufacturer: Manufacturer? = null, var status: String? = null, var group: Group? = null, var entrant: Entry? = null, var vehicleModel: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Entrants(var entrants: MutableList<Entrant>? = null) : Serializable
@@ -47,7 +50,8 @@ class EventActivity() : AppCompatActivity() {
     private lateinit var days: TextView
     private lateinit var event: TextView
     private lateinit var title: TextView
-    private lateinit var button: Button
+    private lateinit var button2: Button
+    private lateinit var button3: Button
     private var functions: Functions = Functions()
 
     @SuppressLint("SetTextI18n")
@@ -59,7 +63,8 @@ class EventActivity() : AppCompatActivity() {
         days = findViewById(R.id.daysTextView)
         event = findViewById(R.id.eventTextView)
         title = findViewById(R.id.textView)
-        button = findViewById(R.id.button2)
+        button2 = findViewById(R.id.button2)
+        button3 = findViewById(R.id.button3)
         item = intent.getSerializableExtra("item") as Items
         val lastDay: Int = item.eventDays?.size as Int - 1
         days.text = item.eventDays?.get(0)?.eventDay + " - " + item.eventDays?.get(lastDay)?.eventDay
@@ -71,7 +76,7 @@ class EventActivity() : AppCompatActivity() {
         listview = findViewById<ListView>(R.id.listView)
         adapter = MyEventAdapter(this, R.layout.item, ArrayList<Stage>(), ArrayList<Entrant?>())
         listview.adapter = adapter
-        button.setOnClickListener {
+        button2.setOnClickListener {
             val intent = Intent(
                 this@EventActivity,
                 ResultsActivity::class.java
@@ -79,6 +84,14 @@ class EventActivity() : AppCompatActivity() {
             val lastIndex = adapter.getList().size - 1
             intent.putExtra("stage", adapter.getItem(lastIndex))
             intent.putExtra("event_id", item.id)
+            intent.putExtra("entrants", entrants)
+            startActivity(intent)
+        }
+        button3.setOnClickListener {
+            val intent = Intent(
+                this@EventActivity,
+                EntrantsActivity::class.java
+            )
             intent.putExtra("entrants", entrants)
             startActivity(intent)
         }
@@ -114,7 +127,8 @@ class EventActivity() : AppCompatActivity() {
             else {
                 if(adapter.getList().size == 0) {
                     runOnUiThread() {
-                        button.visibility = View.VISIBLE
+                        button2.visibility = View.VISIBLE
+                        button3.visibility = View.VISIBLE
                     }
                     stages.stages?.forEach {
                         runOnUiThread() {
