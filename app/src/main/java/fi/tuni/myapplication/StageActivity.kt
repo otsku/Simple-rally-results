@@ -1,7 +1,10 @@
 package fi.tuni.myapplication
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -28,7 +31,9 @@ data class Results(var results: MutableList<Result>? = null) : Serializable
 class StageActivity() : AppCompatActivity() {
     private lateinit var stage: Stage
     private lateinit var listview: ListView
+    private lateinit var button: Button
     private lateinit var adapter: MyStageAdapter
+    private lateinit var adapterTime: MyStageTimeAdapter
     private lateinit var entrants: Entrants
     private var eventId: Int = 0
 
@@ -38,9 +43,15 @@ class StageActivity() : AppCompatActivity() {
         stage = intent.getSerializableExtra("stage") as Stage
         entrants = intent.getSerializableExtra("entrants") as Entrants
         eventId = intent.getSerializableExtra("event_id") as Int
+        button = findViewById(R.id.button)
         listview = findViewById<ListView>(R.id.listView)
-        adapter = MyStageAdapter(this, R.layout.item, ArrayList<Result>(), ArrayList<Entrant?>(), ArrayList<StageTime?>())
+        adapter = MyStageAdapter(this, R.layout.stage_item, ArrayList<Result>(), ArrayList<Entrant?>())
+        adapterTime = MyStageTimeAdapter(this, R.layout.stage_item, ArrayList<StageTime>(), ArrayList<Entrant?>())
         listview.adapter = adapter
+        button.setOnClickListener {
+            if(listview.adapter == adapter) listview.adapter = adapterTime
+            else listview.adapter = adapter
+        }
     }
 
     override fun onStart() {
@@ -52,12 +63,6 @@ class StageActivity() : AppCompatActivity() {
             resultsraw = "{\"results\":" + resultsraw.toString() + "}"
             val results: Results = mp.readValue(resultsraw, Results::class.java)
 
-            var timesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-times/stage-external/" + stage.stageId)
-            timesraw = timesraw?.dropLast(4)
-            timesraw = "{\"times\":" + timesraw.toString() + "}"
-            Log.d("Message", timesraw.toString())
-            val times: StageTimes = mp.readValue(timesraw, StageTimes::class.java)
-
             if(adapter.getList().size == 0) {
                 results.results?.forEach {
                     runOnUiThread() {
@@ -67,14 +72,31 @@ class StageActivity() : AppCompatActivity() {
                                 entrant = i
                             }
                         }
-                        var time: StageTime? = null
-                        for(i in times.times!!) {
+                        adapter.add(it, entrant)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+        thread() {
+            val mp = ObjectMapper()
+            var timesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-times/stage-external/" + stage.stageId)
+            timesraw = timesraw?.dropLast(4)
+            timesraw = "{\"times\":" + timesraw.toString() + "}"
+            Log.d("Message", timesraw.toString())
+            val times: StageTimes = mp.readValue(timesraw, StageTimes::class.java)
+
+            if(adapterTime.getList().size == 0) {
+                times.times?.forEach {
+                    runOnUiThread() {
+                        var entrant: Entrant? = null
+                        for(i in entrants.entrants!!) {
                             if(it.entryId == i.entryId) {
-                                time = i
+                                entrant = i
                             }
                         }
-                        adapter.add(it, entrant, time)
-                        adapter.notifyDataSetChanged()
+                        adapterTime.add(it, entrant)
+                        adapterTime.notifyDataSetChanged()
                     }
                 }
             }

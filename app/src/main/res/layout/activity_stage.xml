@@ -14,6 +14,12 @@
         android:text="Standings after stage"
         android:textSize="32sp" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Switch Between total and stage times" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

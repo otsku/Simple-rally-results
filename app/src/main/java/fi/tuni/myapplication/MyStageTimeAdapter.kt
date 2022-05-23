@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import java.text.SimpleDateFormat
 import java.util.ArrayList
-import java.util.concurrent.TimeUnit
 
-class MyStageAdapter(context: Context, resource: Int, private val arrayList: ArrayList<Result>, private val drivers: ArrayList<Entrant?>) : ArrayAdapter<Result>(context, resource, arrayList) {
+class MyStageTimeAdapter(context: Context, resource: Int, private val arrayList: ArrayList<StageTime>, private val drivers: ArrayList<Entrant?>) : ArrayAdapter<StageTime>(context, resource, arrayList) {
     private lateinit var eventcount: TextView
     private lateinit var name: TextView
     private lateinit var diffTime: TextView
@@ -19,16 +17,16 @@ class MyStageAdapter(context: Context, resource: Int, private val arrayList: Arr
     private lateinit var classView: TextView
     private lateinit var manifacturer: TextView
 
-    fun add(item: Result, driver: Entrant?) {
+    fun add(item: StageTime, driver: Entrant?) {
         arrayList.add(item)
         drivers.add(driver)
     }
 
-    fun getList(): ArrayList<Result> {
+    fun getList(): ArrayList<StageTime> {
         return arrayList
     }
 
-    override fun getItem(position: Int): Result {
+    override fun getItem(position: Int): StageTime {
         return arrayList[position]
     }
 
@@ -48,7 +46,7 @@ class MyStageAdapter(context: Context, resource: Int, private val arrayList: Arr
         manifacturer = convertview.findViewById(R.id.manifacturerTextView)
         eventcount.text = arrayList[position].position.toString()
         name.text = drivers[position]?.driver?.fullName.toString()
-        val tTime = getTime(arrayList[position].totalTimeMs!!)
+        val tTime = getTime(arrayList[position].elapsedDurationMs!!)
         totalTime.text = "Total time: $tTime s"
         val dTime = getTime(arrayList[position].diffFirstMs!!)
         diffTime.text = "Diff to first: +$dTime s"
