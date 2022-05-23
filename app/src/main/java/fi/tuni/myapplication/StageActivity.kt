@@ -91,12 +91,12 @@ class StageActivity() : AppCompatActivity() {
         button.setOnClickListener {
             if(listview.adapter == adapter) {
                 listview.adapter = adapterTime
-                button.text = "Total times"
+                button.text = "Switch to Total times"
                 title.text = "Stage times"
             }
             else {
                 listview.adapter = adapter
-                button.text = "Stage times"
+                button.text = "Switch to Stage times"
                 title.text = "Standings after stage"
             }
         }
