@@ -1,11 +1,13 @@
 package fi.tuni.myapplication
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -32,12 +34,14 @@ class StageActivity() : AppCompatActivity() {
     private lateinit var stage: Stage
     private lateinit var listview: ListView
     private lateinit var button: Button
+    private lateinit var title: TextView
     private lateinit var adapter: MyStageAdapter
     private lateinit var adapterTime: MyStageTimeAdapter
     private lateinit var entrants: Entrants
     private var eventId: Int = 0
     private var functions: Functions = Functions()
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stage)
@@ -45,13 +49,22 @@ class StageActivity() : AppCompatActivity() {
         entrants = intent.getSerializableExtra("entrants") as Entrants
         eventId = intent.getSerializableExtra("event_id") as Int
         button = findViewById(R.id.button)
+        title = findViewById(R.id.textView)
         listview = findViewById<ListView>(R.id.listView)
         adapter = MyStageAdapter(this, R.layout.stage_item, ArrayList<Result>(), ArrayList<Entrant?>())
         adapterTime = MyStageTimeAdapter(this, R.layout.stage_item, ArrayList<StageTime>(), ArrayList<Entrant?>())
         listview.adapter = adapter
         button.setOnClickListener {
-            if(listview.adapter == adapter) listview.adapter = adapterTime
-            else listview.adapter = adapter
+            if(listview.adapter == adapter) {
+                listview.adapter = adapterTime
+                button.text = "Total times"
+                title.text = "Stage times"
+            }
+            else {
+                listview.adapter = adapter
+                button.text = "Stage times"
+                title.text = "Standings after stage"
+            }
         }
     }
 

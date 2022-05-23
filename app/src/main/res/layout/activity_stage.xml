@@ -18,7 +18,7 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Switch Between total and stage times" />
+        android:text="Stage times" />
 
     <ListView
         android:id="@+id/listView"
