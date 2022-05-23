@@ -39,6 +39,7 @@ data class WrcJsonObject(var rallyEvents: RallyEvents? = null) : Serializable
 class MainActivity : AppCompatActivity() {
     private lateinit var listview: ListView
     private lateinit var adapter: MyAdapter
+    private var functions: Functions = Functions()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         thread() {
-            val stuff = getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
+            val stuff = functions.getUrl("https://api.wrc.com/contel-page/83388/calendar/active-season/")
             val mp = ObjectMapper()
             val myObject: WrcJsonObject = mp.readValue(stuff, WrcJsonObject::class.java)
             val events: RallyEvents? = myObject.rallyEvents
@@ -75,25 +76,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    fun getUrl(url: String) : String? {
-        var result: String? = null
-        val sb = StringBuffer()
-        val myUrl = URL(url)
-        val conn = myUrl.openConnection() as HttpURLConnection
-        val reader = BufferedReader(InputStreamReader(conn.getInputStream()))
-
-        reader.use {
-            var line: String? = null
-
-            do {
-                line = it.readLine()
-                sb.append(line)
-            } while(line !== null)
-            result = sb.toString()
-        }
-
-        return result
     }
 }

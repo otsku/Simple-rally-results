@@ -3,17 +3,12 @@ package fi.tuni.myapplication
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.io.Serializable
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlin.concurrent.thread
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -49,6 +44,8 @@ class EventActivity() : AppCompatActivity() {
     private lateinit var nation: TextView
     private lateinit var days: TextView
     private lateinit var event: TextView
+    private lateinit var title: TextView
+    private var functions: Functions = Functions()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +55,7 @@ class EventActivity() : AppCompatActivity() {
         nation = findViewById(R.id.nationTextView)
         days = findViewById(R.id.daysTextView)
         event = findViewById(R.id.eventTextView)
+        title = findViewById(R.id.textView)
         item = intent.getSerializableExtra("item") as Items
         val lastDay: Int = item.eventDays?.size as Int - 1
         days.text = item.eventDays?.get(0)?.eventDay + " - " + item.eventDays?.get(lastDay)?.eventDay
@@ -82,51 +80,38 @@ class EventActivity() : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
         thread() {
             val mp = ObjectMapper()
-            var cars = getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/cars")
+            var cars = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/cars")
             cars = cars?.dropLast(4)
             cars = "{\"entrants\":" + cars.toString() + "}"
             entrants = mp.readValue(cars, Entrants::class.java)
-            var stagesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/stage-winners")
+            var stagesraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + item.id + "/stage-winners")
             stagesraw = stagesraw?.dropLast(4)
             stagesraw = "{\"stages\":" + stagesraw.toString() + "}"
             val stages: Stages = mp.readValue(stagesraw, Stages::class.java)
-            if(adapter.getList().size == 0) {
-                stages.stages?.forEach {
-                    runOnUiThread() {
-                        var winner: Entrant? = null
-                        for(i in entrants.entrants!!) {
-                            if(it.entryId == i.entryId) {
-                                winner = i
+            if(stages.stages?.size == 0) {
+                title.text = "Event has not started yet."
+            }
+            else {
+                if(adapter.getList().size == 0) {
+                    stages.stages?.forEach {
+                        runOnUiThread() {
+                            var winner: Entrant? = null
+                            for(i in entrants.entrants!!) {
+                                if(it.entryId == i.entryId) {
+                                    winner = i
+                                }
                             }
+                            adapter.add(it, winner)
+                            adapter.notifyDataSetChanged()
                         }
-                        adapter.add(it, winner)
-                        adapter.notifyDataSetChanged()
                     }
                 }
             }
         }
-    }
-
-    fun getUrl(url: String) : String? {
-        var result: String? = null
-        val sb = StringBuffer()
-        val myUrl = URL(url)
-        val conn = myUrl.openConnection() as HttpURLConnection
-        val reader = BufferedReader(InputStreamReader(conn.getInputStream()))
-
-        reader.use {
-            var line: String? = null
-
-            do {
-                line = it.readLine()
-                sb.append(line)
-            } while(line !== null)
-            result = sb.toString()
-        }
-        return result
     }
 }

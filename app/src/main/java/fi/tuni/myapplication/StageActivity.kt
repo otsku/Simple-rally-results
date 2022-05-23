@@ -36,6 +36,7 @@ class StageActivity() : AppCompatActivity() {
     private lateinit var adapterTime: MyStageTimeAdapter
     private lateinit var entrants: Entrants
     private var eventId: Int = 0
+    private var functions: Functions = Functions()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class StageActivity() : AppCompatActivity() {
         super.onStart()
         thread() {
             val mp = ObjectMapper()
-            var resultsraw = getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-result/stage-external/" + stage.stageId)
+            var resultsraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-result/stage-external/" + stage.stageId)
             resultsraw = resultsraw?.dropLast(4)
             resultsraw = "{\"results\":" + resultsraw.toString() + "}"
             val results: Results = mp.readValue(resultsraw, Results::class.java)
@@ -80,7 +81,7 @@ class StageActivity() : AppCompatActivity() {
         }
         thread() {
             val mp = ObjectMapper()
-            var timesraw = getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-times/stage-external/" + stage.stageId)
+            var timesraw = functions.getUrl("https://api.wrc.com/results-api/rally-event/" + eventId + "/stage-times/stage-external/" + stage.stageId)
             timesraw = timesraw?.dropLast(4)
             timesraw = "{\"times\":" + timesraw.toString() + "}"
             Log.d("Message", timesraw.toString())
@@ -101,24 +102,5 @@ class StageActivity() : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    fun getUrl(url: String) : String? {
-        var result: String? = null
-        val sb = StringBuffer()
-        val myUrl = URL(url)
-        val conn = myUrl.openConnection() as HttpURLConnection
-        val reader = BufferedReader(InputStreamReader(conn.getInputStream()))
-
-        reader.use {
-            var line: String? = null
-
-            do {
-                line = it.readLine()
-                sb.append(line)
-            } while(line !== null)
-            result = sb.toString()
-        }
-        return result
     }
 }
