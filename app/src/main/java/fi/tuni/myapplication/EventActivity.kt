@@ -1,9 +1,11 @@
 package fi.tuni.myapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -43,11 +45,27 @@ class EventActivity() : AppCompatActivity() {
     private lateinit var listview: ListView
     private lateinit var adapter: MyEventAdapter
     private lateinit var entrants: Entrants
+    private lateinit var winner: TextView
+    private lateinit var nation: TextView
+    private lateinit var days: TextView
+    private lateinit var event: TextView
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
+        winner = findViewById(R.id.winnerTextView)
+        nation = findViewById(R.id.nationTextView)
+        days = findViewById(R.id.daysTextView)
+        event = findViewById(R.id.eventTextView)
         item = intent.getSerializableExtra("item") as Items
+        val lastDay: Int = item.eventDays?.size as Int - 1
+        days.text = item.eventDays?.get(0)?.eventDay + " - " + item.eventDays?.get(lastDay)?.eventDay
+        event.text = item.name
+        if(item.winner?.lastName != null) winner.text = "Event winner: " + item.winner?.lastName
+        else winner.text = ""
+        if(item.winner?.nation?.name != null) nation.text = "Winners country: " + item.winner?.nation?.name
+        else nation.text = ""
         listview = findViewById<ListView>(R.id.listView)
         adapter = MyEventAdapter(this, R.layout.item, ArrayList<Stage>(), ArrayList<Entrant?>())
         listview.adapter = adapter
