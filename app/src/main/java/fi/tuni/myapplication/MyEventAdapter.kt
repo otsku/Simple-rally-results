@@ -33,7 +33,7 @@ class MyEventAdapter(context: Context, resource: Int, private val arrayList:Arra
         return position.toLong()
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertview = convertView
         convertview = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false)
@@ -44,8 +44,8 @@ class MyEventAdapter(context: Context, resource: Int, private val arrayList:Arra
         eventcount.text = (position + 1).toString()
         name.text = arrayList[position].stageName
         winner.text = "Stage winner: " + winners[position]?.driver?.lastName.toString()
-        val timeString = getTime(arrayList[position].elapsedDurationMs!!)
-        time.text = "Best time: " + timeString
+        val timeString = arrayList[position].elapsedDurationMs?.let { getTime(it) }
+        time.text = "Best time: $timeString"
         return convertview
     }
 
