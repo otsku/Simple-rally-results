@@ -14,32 +14,101 @@ import java.io.Serializable
 import kotlin.concurrent.thread
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Country class with all country data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Country(var countryId: Int? = 0, var name: String? = null, var iso2: String? = null, var iso3: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Driver class with all driver data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Driver(var personId: Int? = 0, var country: Country? = null, var firstName: String? = null, var lastName: String? = null, var abbvName: String? = null, var fullName: String? = null, var code: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Manufacturer class with all manufacturer data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Manufacturer(var manufacturerId : Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Group class with all group data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Group(var groupId : Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Entry class with all entry data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Entry(var entrantId : Int? = 0, var name: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Entrant class with all entrant data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Entrant(var entryId: Int? = 0, var driver : Driver? = null, var manufacturer: Manufacturer? = null, var status: String? = null, var group: Group? = null, var entrant: Entry? = null, var vehicleModel: String? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * List of Entrants
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Entrants(var entrants: MutableList<Entrant>? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Stage class with all stage data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Stage(var stageId: Int? = 0, var entryId: Int? = 0, var stageName: String? = null, var elapsedDurationMs: Int? = 0) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * class of Stages
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Stages(var stages: MutableList<Stage>? = null) : Serializable
 
+/**
+ * Activity to show a list of event stages and winners
+ *
+ * @author Otto Kujala
+ *
+ */
 class EventActivity() : AppCompatActivity() {
     private lateinit var item: Items
     private lateinit var listview: ListView

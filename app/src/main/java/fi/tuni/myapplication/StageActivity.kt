@@ -19,17 +19,51 @@ import java.net.URL
 import kotlin.concurrent.thread
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * StageTime class with all StageTime data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class StageTime(var entryId: Int? = 0, var elapsedDurationMs: Int? = 0, var status: String? = null, var position: Int? = 0, var diffFirstMs: Int? = 0) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * List of StageTimes
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class StageTimes(var times: MutableList<StageTime>? = null) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Result class with all Result data
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Result(var entryId: Int? = 0, var stageTimeMs: Int? = 0, var totalTimeMs: Int? = 0, var position: Int? = 0, var diffFirstMs: Int? = 0) : Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * List of Results
+ * made for jackson object mapping
+ *
+ * @author Otto Kujala
+ *
+ */
 data class Results(var results: MutableList<Result>? = null) : Serializable
 
+/**
+ * Activity to show a list of rally stage results or rally results after stage
+ *
+ * @author Otto Kujala
+ *
+ */
 class StageActivity() : AppCompatActivity() {
     private lateinit var stage: Stage
     private lateinit var listview: ListView

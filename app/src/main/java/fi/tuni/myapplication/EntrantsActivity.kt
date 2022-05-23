@@ -4,9 +4,14 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.fasterxml.jackson.databind.ObjectMapper
 import kotlin.concurrent.thread
 
+/**
+ * Activity to show a list of event entrants
+ *
+ * @author Otto Kujala
+ *
+ */
 class EntrantsActivity() : AppCompatActivity() {
     private lateinit var entrants: Entrants
     private lateinit var listview: ListView

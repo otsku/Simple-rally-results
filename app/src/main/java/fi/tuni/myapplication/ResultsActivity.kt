@@ -7,6 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlin.concurrent.thread
 
+/**
+ * Activity to show a list of rally results
+ *
+ * @author Otto Kujala
+ *
+ */
 class ResultsActivity() : AppCompatActivity() {
     private lateinit var stage: Stage
     private lateinit var listview: ListView
