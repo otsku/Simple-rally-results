@@ -16,14 +16,10 @@ https://rallydatajunkie.com/visualising-wrc-rally-results/index.html<br />
 ## Usage
 
 1. First you get a list of current seasons events<br />
-<br />
 2. After selecting an event you can see all stages of selected event<br />
-<br />
-2.1. You can see event results after clicking Event results button<br />
-<br />
-2.2. You can see list of drivers in event after clicking Event entrants button<br />
-<br />
-2.3. You can see list of stage results after clicking any stage. You can also switch between stage times and rally times after selected stage<br />
+3. You can see event results after clicking Event results button<br />
+4. You can see list of drivers in event after clicking Event entrants button<br />
+5. You can see list of stage results after clicking any stage. You can also switch between stage times and rally times after selected stage<br />
 
 ---
 
