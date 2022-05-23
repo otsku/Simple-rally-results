@@ -3,6 +3,8 @@ package fi.tuni.myapplication
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +47,7 @@ class EventActivity() : AppCompatActivity() {
     private lateinit var days: TextView
     private lateinit var event: TextView
     private lateinit var title: TextView
+    private lateinit var button: Button
     private var functions: Functions = Functions()
 
     @SuppressLint("SetTextI18n")
@@ -56,6 +59,7 @@ class EventActivity() : AppCompatActivity() {
         days = findViewById(R.id.daysTextView)
         event = findViewById(R.id.eventTextView)
         title = findViewById(R.id.textView)
+        button = findViewById(R.id.button2)
         item = intent.getSerializableExtra("item") as Items
         val lastDay: Int = item.eventDays?.size as Int - 1
         days.text = item.eventDays?.get(0)?.eventDay + " - " + item.eventDays?.get(lastDay)?.eventDay
@@ -67,6 +71,17 @@ class EventActivity() : AppCompatActivity() {
         listview = findViewById<ListView>(R.id.listView)
         adapter = MyEventAdapter(this, R.layout.item, ArrayList<Stage>(), ArrayList<Entrant?>())
         listview.adapter = adapter
+        button.setOnClickListener {
+            val intent = Intent(
+                this@EventActivity,
+                ResultsActivity::class.java
+            )
+            val lastIndex = adapter.getList().size - 1
+            intent.putExtra("stage", adapter.getItem(lastIndex))
+            intent.putExtra("event_id", item.id)
+            intent.putExtra("entrants", entrants)
+            startActivity(intent)
+        }
         listview.setOnItemClickListener { parent, _, position, _ ->
             val selectedItem: Serializable = parent.getItemAtPosition(position) as Serializable
             val intent = Intent(
@@ -98,6 +113,9 @@ class EventActivity() : AppCompatActivity() {
             }
             else {
                 if(adapter.getList().size == 0) {
+                    runOnUiThread() {
+                        button.visibility = View.VISIBLE
+                    }
                     stages.stages?.forEach {
                         runOnUiThread() {
                             var winner: Entrant? = null

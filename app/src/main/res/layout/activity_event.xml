@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:visibility="visible"
     tools:context=".MainActivity">
 
     <TextView
@@ -32,8 +33,15 @@
         android:id="@+id/nationTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Manifacturer"
+        android:text="Winners country"
         android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Event Results"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView"
@@ -45,5 +53,5 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

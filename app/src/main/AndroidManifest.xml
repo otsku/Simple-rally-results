@@ -33,6 +33,11 @@
             android:exported="true"
             tools:ignore="Instantiatable">
         </activity>
+        <activity
+            android:name=".ResultsActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
     </application>
 
 </manifest>
