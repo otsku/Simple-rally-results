@@ -18,6 +18,7 @@ class MyStageAdapter(context: Context, resource: Int, private val arrayList: Arr
     private lateinit var totalTime: TextView
     private lateinit var classView: TextView
     private lateinit var manifacturer: TextView
+    private var functions: Functions = Functions()
 
     fun add(item: Result, driver: Entrant?) {
         arrayList.add(item)
@@ -48,32 +49,12 @@ class MyStageAdapter(context: Context, resource: Int, private val arrayList: Arr
         manifacturer = convertview.findViewById(R.id.manifacturerTextView)
         eventcount.text = arrayList[position].position.toString()
         name.text = drivers[position]?.driver?.fullName.toString()
-        val tTime = getTime(arrayList[position].totalTimeMs!!)
+        val tTime = functions.getTime(arrayList[position].totalTimeMs!!)
         totalTime.text = "Total time: $tTime s"
-        val dTime = getTime(arrayList[position].diffFirstMs!!)
+        val dTime = functions.getTime(arrayList[position].diffFirstMs!!)
         diffTime.text = "Diff to first: +$dTime s"
         classView.text = "Group: " + drivers[position]?.group?.name
         manifacturer.text = "Manifacturer: "+ drivers[position]?.manufacturer?.name
         return convertview
-    }
-
-    fun getTime(milliseconds: Int) : String {
-        val hours = milliseconds / 1000 / 60 / 60 % 24
-        var minutes = (milliseconds / 1000 / 60 % 60).toString()
-        if(minutes.length == 1) {
-            minutes = "0$minutes"
-        }
-        var seconds = (milliseconds / 1000 % 60).toString()
-        if(seconds.length == 1) {
-            seconds = "0$seconds"
-        }
-        val tenths = milliseconds / 100 % 10
-        if(hours == 0 && minutes == "00") {
-            return "$seconds.$tenths"
-        }
-        if(hours == 0) {
-            return "$minutes:$seconds.$tenths"
-        }
-        return "$hours:$minutes:$seconds.$tenths"
     }
 }
