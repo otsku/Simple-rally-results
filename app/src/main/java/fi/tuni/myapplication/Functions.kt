@@ -5,7 +5,18 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+/**
+ * Functions class has few frequently used functions
+ *
+ * @author Otto Kujala
+ *
+ */
 class Functions {
+    /**
+     * Simple function for api call
+     * @param url the url for api call
+     * @return the result of api call
+     */
     fun getUrl(url: String) : String? {
         var result: String? = null
         val sb = StringBuffer()
@@ -25,6 +36,11 @@ class Functions {
         return result
     }
 
+    /**
+     * Simple function to change milliseconds to readable format
+     * @param milliseconds milliseconds to translate to readable format
+     * @return Time in readable format
+     */
     fun getTime(milliseconds: Int) : String {
         val hours = milliseconds / 1000 / 60 / 60 % 24
         var minutes = (milliseconds / 1000 / 60 % 60).toString()
