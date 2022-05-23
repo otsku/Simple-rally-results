@@ -48,7 +48,7 @@ List of stage results<br />
 
 ## Screencast
 
-[Screencast will be available later.](https://youtu.be/qMhBa1VhoU0)<br />
+[https://youtu.be/qMhBa1VhoU0](https://youtu.be/qMhBa1VhoU0)<br />
 
 ---
 
