@@ -25,22 +25,22 @@ https://rallydatajunkie.com/visualising-wrc-rally-results/index.html<br />
 
 ## Screenshots
 
-List of events
+List of events<br />
 ![eventlist](https://user-images.githubusercontent.com/77827470/169858057-a4debcd1-ee33-4380-a8c8-6b19b206deed.png)
 
-List of event stages
+List of event stages<br />
 ![stagelist](https://user-images.githubusercontent.com/77827470/169858182-397b424f-5a9b-4b67-a333-e8559ad686fd.png)
 
-List of event results
+List of event results<br />
 ![resultlist](https://user-images.githubusercontent.com/77827470/169858415-09964844-428d-4e36-a2ab-7e9485785b96.png)
 
-List of event entrants
+List of event entrants<br />
 ![entrantlist](https://user-images.githubusercontent.com/77827470/169858460-063af46e-cca3-4f44-80b3-ed78a2be4109.png)
 
-List of event standing after a stage
+List of event standing after a stage<br />
 ![stagestandings](https://user-images.githubusercontent.com/77827470/169858725-f8ddf23d-9dfe-419c-acc2-8466befdba65.png)
 
-List of stage results
+List of stage results<br />
 ![stageresults](https://user-images.githubusercontent.com/77827470/169858794-2e253dfe-c65a-4933-8e9b-9d811e58f63e.png)
 
 
