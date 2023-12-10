@@ -1,5 +1,7 @@
 # curly-goggles
 
+The Api I used is now broken. I'm trying to contact the Api creator so I know if this project is doomed. :(
+
 This is my exercise work project for school course.<br />
 With this app you can browse wrc results.<br />
 
